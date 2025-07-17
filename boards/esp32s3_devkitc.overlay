@@ -5,10 +5,8 @@
 };
 
 &i2c0 {
-    // compatible = "espressif,esp32-i2c.yaml";
     status = "okay";
     clock-frequency = <I2C_BITRATE_STANDARD>;
-    // zephyr,concat-buf-size = <1024>;
     
     my_display: ssd1306@3c {
         compatible = "solomon,ssd1306fb";
