@@ -1,6 +1,6 @@
 /*
- * nRF5340DK overlay for SSD1306 display
- * Using I2C1 with same pin assignments as your sensor example
+ * nRF5340DK overlay - Combined SSD1306 display and MPU6050 IMU
+ * Using I2C1 with pins P1.14 (SCL) and P1.15 (SDA)
  */
 
 / {
@@ -27,6 +27,15 @@
         multiplex-ratio = <63>;
         com-sequential;
         prechargep = <0x22>;
+    };
+    
+    /* MPU6050 IMU */
+    mpu6050@68 {
+        compatible = "invensense,mpu6050";
+        reg = <0x68>;
+        status = "okay";
+        int-gpios = <&gpio0 11 GPIO_ACTIVE_HIGH>;
+        smplrt-div = <249>;
     };
 };
 
