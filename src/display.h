@@ -5,6 +5,7 @@
 #include <lvgl.h>
 #include <string.h>
 #include <zephyr/kernel.h>
+#include <zephyr/logging/log.h>
 
 int display_init();
 int display_loop();

@@ -1,5 +1,7 @@
 #include "display.h"
 
+LOG_MODULE_REGISTER(display_module, CONFIG_LOG_DEFAULT_LEVEL);
+
 static const int32_t sleep_time_ms = 50;  
 
 uint32_t count = 0;
@@ -32,11 +34,11 @@ void draw_bottom_right_circle(const struct device *display_dev) {
     display_write(display_dev, x_pos, y_pos, &desc, circle_bitmap);
     
     // Write to display with error checking
-    // if (display_write(display_dev, x_pos, y_pos, &desc, circle_bitmap)) {
-    //     LOG_ERR("Failed to write circle bitmap!");
-    // } else {
-    //     LOG_INF("Circle drawn at (%d, %d)", x_pos, y_pos);
-    // }
+    if (display_write(display_dev, x_pos, y_pos, &desc, circle_bitmap)) {
+        LOG_ERR("Failed to write circle bitmap!");
+    } else {
+        LOG_INF("Circle drawn at (%d, %d)", x_pos, y_pos);
+    }
 }
 
 static const struct device *display;
@@ -45,11 +47,11 @@ int display_init() {
     display = DEVICE_DT_GET(DT_CHOSEN(zephyr_display));
     
     if (!device_is_ready(display)) {
-        printk("Display device not ready\n");
+        LOG_INF("Display device not ready\n");
         return -1;
     }
 
-    printk("Display initialized successfully\n");
+    LOG_INF("Display initialized successfully\n");
 	
     hello_label = lv_label_create(lv_scr_act());
     lv_label_set_text(hello_label, "Hello, World!");
@@ -68,7 +70,7 @@ int display_init() {
 
 int display_loop() {
     if (!device_is_ready(display)) {
-        printk("Display not ready, skipping LVGL\n");
+        LOG_INF("Display not ready, skipping LVGL\n");
         k_msleep(1000);
         return -1;  // Error
     }
