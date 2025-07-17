@@ -1,7 +1,7 @@
 # To Add
 ## Device Tree
-- [ ] IMU through I2C overlay
-- [ ] create nrf5340dk overlay
+- [x] IMU through I2C overlay
+- [x] create nrf5340dk overlay
 - [ ] add LED to overlay
 - [ ] LED breath using pwm
 
@@ -10,12 +10,10 @@
 - [ ] WIFI if ESP32S3
 
 ## Futureproof
-- [ ] KThreads
-- [ ] ZBus
 - [ ] Modules
-- [ ] Debugging
-- [ ] C++ Development
 - [ ] SysBuild
 - [ ] MCU Boot
     - [ ] FOTA BLE
+- [ ] Debugging
 - [ ] ZTest & GTest Integration
+- [ ] C++ Development

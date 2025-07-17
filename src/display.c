@@ -47,7 +47,7 @@ int display_init() {
     display = DEVICE_DT_GET(DT_CHOSEN(zephyr_display));
     
     if (!device_is_ready(display)) {
-        LOG_INF("Display device not ready\n");
+        LOG_ERR("Display device not ready\n");
         return -1;
     }
 
@@ -70,7 +70,7 @@ int display_init() {
 
 int display_loop() {
     if (!device_is_ready(display)) {
-        LOG_INF("Display not ready, skipping LVGL\n");
+        LOG_ERR("Display not ready, skipping LVGL\n");
         k_msleep(1000);
         return -1;  // Error
     }
