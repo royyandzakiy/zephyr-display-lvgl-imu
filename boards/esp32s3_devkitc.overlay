@@ -1,0 +1,25 @@
+/ {
+    chosen {
+        zephyr,display = &my_display;
+    };
+};
+
+&i2c0 {
+    // compatible = "espressif,esp32-i2c.yaml";
+    status = "okay";
+    clock-frequency = <I2C_BITRATE_STANDARD>;
+    // zephyr,concat-buf-size = <1024>;
+    
+    my_display: ssd1306@3c {
+        compatible = "solomon,ssd1306fb";
+        reg = <0x3c>;
+        width = <128>;
+        height = <64>;
+        segment-offset = <0>;
+        page-offset = <0>;
+        display-offset = <0>;
+        multiplex-ratio = <63>;
+        com-sequential;
+        prechargep = <0x22>;
+    };    
+};
