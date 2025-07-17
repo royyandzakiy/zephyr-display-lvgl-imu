@@ -7,7 +7,5 @@ target_include_directories(app PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-target_sources(app PRIVATE 
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/main.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/display.c
-)
+FILE(GLOB app_sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
+target_sources(app PRIVATE ${app_sources})

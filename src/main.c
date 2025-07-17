@@ -35,7 +35,7 @@ int main(void)
 #include <stdio.h>
 #include <zephyr/sys/__assert.h>
 #include <zephyr/logging/log.h>
-LOG_MODULE_REGISTER(mpu6050_module, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(mpu6050_module, CONFIG_LOG_DEFAULT_LEVEL);
 
 /* Static assertions for safety */
 BUILD_ASSERT(DT_HAS_COMPAT_STATUS_OKAY(invensense_mpu6050), "No MPU6050 compatible device found");
@@ -97,7 +97,7 @@ static int process_mpu6050(void)
         return rc;
     }
 
-    printf("[%s]: %.2f°C | Accel: %.2f,%.2f,%.2f m/s² | Gyro: %.2f,%.2f,%.2f rad/s\n",
+    LOG_INF("[%s]: %.2f°C | Accel: %.2f,%.2f,%.2f m/s² | Gyro: %.2f,%.2f,%.2f rad/s",
            now_str(),
            sensor_value_to_double(&temperature),
            sensor_value_to_double(&accel[0]),
@@ -149,10 +149,10 @@ int imu_loop(void)
 #ifndef CONFIG_MPU6050_TRIGGER
     int rc = process_mpu6050();
     if (rc != 0) {
-        k_sleep(K_MSEC(500)); // Shorter delay on error
+        k_sleep(K_MSEC(500));
         return rc;
     }
-    k_sleep(K_SECONDS(1)); // More frequent polling
+    k_sleep(K_SECONDS(1));
 #endif
     return 0;
 }
