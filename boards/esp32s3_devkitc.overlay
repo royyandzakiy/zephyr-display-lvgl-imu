@@ -1,3 +1,8 @@
+/*
+ * ESP32-S3 DevKitC overlay - Combined SSD1306 display and MPU6050 IMU
+ * Using default I2C pins: GPIO8 (SDA), GPIO9 (SCL)
+ */
+
 / {
     chosen {
         zephyr,display = &my_display;
@@ -8,6 +13,7 @@
     status = "okay";
     clock-frequency = <I2C_BITRATE_STANDARD>;
     
+    /* SSD1306 Display */
     my_display: ssd1306@3c {
         compatible = "solomon,ssd1306fb";
         reg = <0x3c>;
@@ -19,5 +25,14 @@
         multiplex-ratio = <63>;
         com-sequential;
         prechargep = <0x22>;
-    };    
+    };
+    
+    /* MPU6050 IMU */
+    mpu6050@68 {
+        compatible = "invensense,mpu6050";
+        reg = <0x68>;
+        status = "okay";
+        int-gpios = <&gpio0 11 GPIO_ACTIVE_HIGH>;
+        smplrt-div = <249>;
+    };
 };
