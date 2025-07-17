@@ -1,0 +1,48 @@
+/*
+ * nRF5340DK overlay for SSD1306 display
+ * Using I2C1 with same pin assignments as your sensor example
+ */
+
+/ {
+    chosen {
+        zephyr,display = &my_display;
+    };
+};
+
+&i2c1 {
+    status = "okay";
+    pinctrl-0 = <&i2c1_default>;
+    pinctrl-1 = <&i2c1_sleep>;
+    pinctrl-names = "default", "sleep";
+    clock-frequency = <I2C_BITRATE_STANDARD>;
+    
+    my_display: ssd1306@3c {
+        compatible = "solomon,ssd1306fb";
+        reg = <0x3c>;
+        width = <128>;
+        height = <64>;
+        segment-offset = <0>;
+        page-offset = <0>;
+        display-offset = <0>;
+        multiplex-ratio = <63>;
+        com-sequential;
+        prechargep = <0x22>;
+    };
+};
+
+&pinctrl {
+    /omit-if-no-ref/ i2c1_default: i2c1_default {
+        group1 {
+            psels = <NRF_PSEL(TWIM_SCL, 1, 14)>,
+                    <NRF_PSEL(TWIM_SDA, 1, 15)>;
+        };
+    };
+    
+    /omit-if-no-ref/ i2c1_sleep: i2c1_sleep {
+        group1 {
+            psels = <NRF_PSEL(TWIM_SCL, 1, 14)>,
+                    <NRF_PSEL(TWIM_SDA, 1, 15)>;
+            low-power-enable;
+        };
+    };
+};
