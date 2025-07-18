@@ -15,12 +15,15 @@
     pinctrl-1 = <&i2c1_sleep>;
     pinctrl-names = "default", "sleep";
     clock-frequency = <I2C_BITRATE_STANDARD>;
+
+    zephyr,concat-buf-size = <1024>;  /* Increased from default 16 */
+    zephyr,flash-buf-max-size = <64>;  /* Increased from default 16 */
     
     my_display: ssd1306@3c {
         compatible = "solomon,ssd1306fb";
         reg = <0x3c>;
         width = <128>;
-        height = <64>;
+        height = <128>;
         segment-offset = <0>;
         page-offset = <0>;
         display-offset = <0>;

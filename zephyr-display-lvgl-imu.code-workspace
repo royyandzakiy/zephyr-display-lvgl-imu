@@ -9,7 +9,9 @@
 	],
 	"settings": {
 		"files.associations": {
-			"kernel.h": "c"
+			"kernel.h": "c",
+			"display.h": "c",
+			"log.h": "c"
 		}
 	}
 }

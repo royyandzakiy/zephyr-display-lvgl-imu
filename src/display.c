@@ -57,11 +57,12 @@ int display_init() {
     lv_label_set_text(hello_label, "Hello, World!");
     lv_obj_set_pos(hello_label, 2, 0);
 	lv_obj_set_style_text_font(hello_label, &lv_font_montserrat_14, LV_PART_MAIN);
+    lv_obj_clear_flag(hello_label, LV_OBJ_FLAG_HIDDEN);
 
     counter_label = lv_label_create(lv_scr_act());
     lv_obj_align(counter_label, LV_ALIGN_BOTTOM_MID, 0, 0);	
 
-    draw_bottom_right_circle(display);
+    // draw_bottom_right_circle(display);
 
     display_blanking_off(display);
 
