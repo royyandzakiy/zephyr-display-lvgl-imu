@@ -1,7 +1,7 @@
-/*
- * nRF5340DK overlay - Combined SSD1306 display and MPU6050 IMU
- * Using I2C1 with pins P1.14 (SCL) and P1.15 (SDA)
- */
+// /*
+//  * nRF5340DK overlay - Combined SSD1306 display and MPU6050 IMU
+//  * Using I2C1 with pins P1.14 (SCL) and P1.15 (SDA)
+//  */
 
 / {
     chosen {
@@ -9,51 +9,122 @@
     };
 };
 
+// &i2c1 {
+//     compatible = "nordic,nrf-twim";
+//     status = "okay";
+//     clock-frequency = <I2C_BITRATE_FAST_PLUS>;
+//     // clock-frequency = <I2C_BITRATE_STANDARD>;
+//     zephyr,concat-buf-size = <2048>; // 64
+//     pinctrl-0 = <&i2c1_default>;
+//     pinctrl-1 = <&i2c1_sleep>;
+//     pinctrl-names = "default", "sleep";
+//     // zephyr,flash-buf-max-size = <64>; 
+    
+//     my_display: ssd1306@3c {
+//         compatible = "solomon,ssd1306fb";
+//         reg = <0x3c>;
+//         width = <128>;
+//         height = <128>; // 64
+//         segment-offset = <0>;
+//         page-offset = <0>;
+//         display-offset = <0>;
+//         multiplex-ratio = <63>;
+//         // com-sequential;
+//         prechargep = <0x22>;
+// 		ready-time-ms = <1>;
+//     };
+    
+//     /* MPU6050 IMU */
+//     mpu6050@68 {
+//         compatible = "invensense,mpu6050";
+//         reg = <0x68>;
+//         status = "okay";
+//         int-gpios = <&gpio0 11 GPIO_ACTIVE_HIGH>;
+//         smplrt-div = <249>;
+//     };
+// };
+
+// &pinctrl {
+//     /omit-if-no-ref/ i2c1_default: i2c1_default {
+//         group1 {
+//             psels = <NRF_PSEL(TWIM_SCL, 1, 14)>,
+//                     <NRF_PSEL(TWIM_SDA, 1, 15)>;
+//         };
+//     };
+    
+//     /omit-if-no-ref/ i2c1_sleep: i2c1_sleep {
+//         group1 {
+//             psels = <NRF_PSEL(TWIM_SCL, 1, 14)>,
+//                     <NRF_PSEL(TWIM_SDA, 1, 15)>;
+//             low-power-enable;
+//         };
+//     };
+// };
+
+// To get started, press Ctrl+Space to bring up the completion menu and view the available nodes.
+
+// You can also use the buttons in the sidebar to perform actions on nodes.
+// Actions currently available include:
+
+// * Enabling / disabling the node
+// * Adding the bus to a bus
+// * Removing the node
+// * Connecting ADC channels
+
+// For more help, browse the DeviceTree documentation at https://docs.zephyrproject.org/latest/guides/dts/index.html
+// You can also visit the nRF DeviceTree extension documentation at https://nrfconnect.github.io/vscode-nrf-connect/devicetree/nrfdevicetree.html
+
+
 &i2c1 {
-    status = "okay";
+	compatible = "nordic,nrf-twim";
+	status = "okay";
+	clock-frequency = <I2C_BITRATE_FAST>;
+    zephyr,concat-buf-size = <4096>;
     pinctrl-0 = <&i2c1_default>;
     pinctrl-1 = <&i2c1_sleep>;
     pinctrl-names = "default", "sleep";
-    clock-frequency = <I2C_BITRATE_STANDARD>;
-
-    zephyr,concat-buf-size = <1024>;  /* Increased from default 16 */
-    zephyr,flash-buf-max-size = <64>;  /* Increased from default 16 */
-    
+  
     my_display: ssd1306@3c {
+        status = "disabled";
         compatible = "solomon,ssd1306fb";
-        reg = <0x3c>;
-        width = <128>;
-        height = <128>;
+        reg = <0x3c>; //0x3c is the i2c address of the display controller IC, SSD1306.
+        width = <128>; // Width of the display.
+        height = <64>; // Height of the display. Change to '64' when using the 128x64 pixel version.
         segment-offset = <0>;
         page-offset = <0>;
         display-offset = <0>;
-        multiplex-ratio = <63>;
+        multiplex-ratio = <63>; //change to '63' when using the 128x64 pixel version
+        segment-remap;
+        com-invdir;
         com-sequential;
         prechargep = <0x22>;
+        inversion-on;
+	// add more driver settings here
     };
-    
+
     /* MPU6050 IMU */
     mpu6050@68 {
         compatible = "invensense,mpu6050";
-        reg = <0x68>;
+        reg = <0x68>;  // Default I2C address (AD0 pin low)
         status = "okay";
-        int-gpios = <&gpio0 11 GPIO_ACTIVE_HIGH>;
-        smplrt-div = <249>;
+        int-gpios = <&gpio0 10 GPIO_ACTIVE_HIGH>;  // Using P0.10 for interrupt
+        smplrt-div = <249>;  // Sample rate divider (249 = 1kHz / (1 + 249) = ~4Hz)
     };
 };
 
+
 &pinctrl {
-    /omit-if-no-ref/ i2c1_default: i2c1_default {
+    i2c1_default: i2c1_default {
         group1 {
-            psels = <NRF_PSEL(TWIM_SCL, 1, 14)>,
-                    <NRF_PSEL(TWIM_SDA, 1, 15)>;
+            psels = <NRF_PSEL(TWIM_SDA, 1, 2)>, // GPIO P1.2
+                <NRF_PSEL(TWIM_SCL, 1, 3)>; 	// GPIO P1.3
         };
     };
-    
-    /omit-if-no-ref/ i2c1_sleep: i2c1_sleep {
+
+    i2c1_sleep: i2c1_sleep {
         group1 {
-            psels = <NRF_PSEL(TWIM_SCL, 1, 14)>,
-                    <NRF_PSEL(TWIM_SDA, 1, 15)>;
+            psels = <NRF_PSEL(TWIM_SDA, 1, 2)>, // GPIO P1.2
+                <NRF_PSEL(TWIM_SCL, 1, 3)>;	// GPIO P1.3
             low-power-enable;
         };
     };
