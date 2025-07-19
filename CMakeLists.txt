@@ -11,6 +11,6 @@ target_include_directories(app PRIVATE
 FILE(GLOB app_sources 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/imu.c
-    # ${CMAKE_CURRENT_SOURCE_DIR}/src/display.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/display.c
 )
 target_sources(app PRIVATE ${app_sources})

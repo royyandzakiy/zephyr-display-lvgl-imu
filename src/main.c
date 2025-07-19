@@ -1,4 +1,4 @@
-// #include "display.h"
+#include "display.h"
 #include "imu.h"
 
 #include <zephyr/logging/log.h>
@@ -9,13 +9,13 @@ int main(void)
     LOG_INF("Main Start");
 
 	imu_init();
-    // display_init();
+    display_init();
 
     k_msleep(1000);
 
     while(1) {
         imu_loop();
-        // display_loop();
+        display_loop();
     }
  
     LOG_INF("Main End");

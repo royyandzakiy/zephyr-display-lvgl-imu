@@ -85,7 +85,7 @@
     pinctrl-names = "default", "sleep";
   
     my_display: ssd1306@3c {
-        status = "disabled";
+        status = "okay";
         compatible = "solomon,ssd1306fb";
         reg = <0x3c>; //0x3c is the i2c address of the display controller IC, SSD1306.
         width = <128>; // Width of the display.
@@ -103,7 +103,7 @@
     };
 
     /* MPU6050 IMU */
-    mpu6050@68 {
+    my_imu: mpu6050@68 {
         compatible = "invensense,mpu6050";
         reg = <0x68>;  // Default I2C address (AD0 pin low)
         status = "okay";
